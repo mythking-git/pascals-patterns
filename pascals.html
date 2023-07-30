@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<!-- 
+
+Pascal's Triangles Patterns by Mikey Thomas
+              30/7/2023
+
+-->
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patterns in Pascals</title>
+    <link rel="icon" href="https://svg-files.pixelied.com/73bbd25f-e40c-4c23-8f64-7a8e375baadd/thumb-256px.png">
+
+
+    
+
+    <style>
+        html {
+            font-family: "Lucida Console", "Menlo", "Monaco", "Courier", monospace;
+            /* background-color: #000;
+            color: white; */
+        }
+
+
+        #main {
+            text-align: center;
+            opacity: .5;
+            padding-top: 20px;
+        }
+
+        div {
+            text-align: center;
+        }
+
+        #sliders {
+            position: fixed;
+            top: 0;
+            padding-top: 2%;
+            background-color: rgba(138, 138, 138, 0.5);
+            border-radius: 25px;
+            padding-top: 10px;
+            top: 10px;
+            padding-left: 10px;
+        }
+
+        ul{
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding-left: 0px;
+        }
+
+        footer {
+            position: fixed;
+            bottom:0;
+            right:0;
+            background-color: rgba(0,0,0, 0.5);
+            color: #fff;
+            text-align: right;
+            padding:5px;
+            font-size: 12px; 
+        }
+
+
+        @media screen and (max-width: 600px) {
+            input {
+                width: 80%;
+                padding: 0;
+            }
+
+            #sliders{
+                max-width: 100%;
+                position:fixed;
+                bottom: 10px;
+                top: auto;
+                right: 10px;
+                left: 10px;
+            }
+
+        }
+    </style>
+    <script>
+        function isPrime(num) {
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body onload="reDraw()">
+
+    <div id="main"></div>
+
+    <div id="sliders">
+        <div class="mainSliders">
+            <ul>
+                <h4>Main Sliders</h4>
+                <li>
+                    <div class="rowSlider">
+                        <input type="range" min="0" max="300" value="32" class="slider" id="valRange"
+                            onchange="reDraw()">
+                        <p>Rows: <span id="value"></span></p>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="modSlider">
+                        <input type="range" min="1" max="10" value="2" class="slider" id="modValue" onchange="reDraw()">
+                        <p>Modulus: <span id="mod"></span></p>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="fontScale"">
+                        <input type="range" min="1" max="50" value="10" class="slider" id="fontScale"
+                            onchange="reDraw()">
+                        <p>Font Size: <span id="font"></span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="primaryColor">
+            <ul>
+                <h4>Primary Color</h4>
+                <li>
+                    <div class="red">
+                        <input type="range" min="0" max="255" value="255" class="slider" id="rP" onchange="reDraw()">
+                        <p>Red: <span id="colorRedP"></span></p>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="green">
+                        <input type="range" min="0" max="255" value="255" class="slider" id="gP" onchange="reDraw()">
+                        <p>Green: <span id="colorGreenP"></span></p>
+                    </div>
+                </li>
+
+
+                <li>
+                    <div class="blue">
+                        <input type="range" min="0" max="255" value="255" class="slider" id="bP" onchange="reDraw()">
+                        <p>Blue: <span id="colorBlueP"></span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="secondaryColor">
+            <ul>
+                <h4>Secondary Color</h4>
+                <li>
+                    <div class="red">
+                        <input type="range" min="0" max="255" value="0" class="slider" id="rS" onchange="reDraw()">
+                        <p>Red: <span id="colorRedS"></span></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="green">
+                        <input type="range" min="0" max="255" value="0" class="slider" id="gS" onchange="reDraw()">
+                        <p>Green: <span id="colorGreenS"></span></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="blue">
+                        <input type="range" min="0" max="255" value="0" class="slider" id="bS" onchange="reDraw()">
+                        <p>Blue: <span id="colorBlueS"></span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+        const main = document.getElementById("main");
+
+        function pasc(n, m, f, rP, gP, bP, rS, gS, bS) {
+            main.style.fontSize = f + "px";
+            main.style.marginTop = -f + "px";
+
+            var result = [];
+            result[0] = [1];
+            result[1] = [1, 1];
+            var pascal = '';
+            pascal += "<div><span style='background:rgb(" + rS + "," + gS + "," + bS + "); padding-right" + f + "px'>1</span></div>"
+            pascal += "<div><span style='background:rgb(" + rS + "," + gS + "," + bS + "); padding-right" + f + "px'>1</span><span style='background:rgb(" + rS + "," + gS + "," + bS + "); padding-left:" + f + "px; padding-right" + f + "px'>1</span></div>"
+            for (var row = 2; row < n; row++) {
+                result[row] = [1];
+
+                pascal += "<div><span style='background:rgb(" + rS + "," + gS + "," + bS + ");'>1</span>"
+
+                for (var col = 1; col <= row - 1; col++) {
+                    result[row][col] = result[row - 1][col] + result[row - 1][col - 1];
+                    result[row].push(1);
+
+
+                    if ((result[row][col]).toString()[(result[row][col]).toString().length - 1] % m == 1) {
+                        pascal += "<span style='background:rgb(" + rS + "," + gS + "," + bS + "); padding-left:" + f + "px; padding-right" + f + "px'><bold>" + (result[row][col]).toString()[(result[row][col]).toString().length - 1] + "</bold></span>";
+                    } else {
+                        pascal += "<span style='background:rgb(" + rP + "," + gP + "," + bP + ");padding-left:" + f + "px; padding-right" + f + "px'>" + (result[row][col]).toString()[(result[row][col]).toString().length - 1] + "</span>";
+                    }
+                }
+
+                pascal += "<span style='background:rgb(" + rS + "," + gS + "," + bS + "); padding-left:" + f + "px; padding-right" + f + "px'>1</span></div>"
+                main.innerHTML += pascal;
+                pascal = "";
+            }
+            return result;
+        };
+    </script>
+    <script>
+        
+        var rowSlider = document.getElementById("valRange");
+        var value = document.getElementById("value");
+        var modSlider = document.getElementById("modValue");
+        var modVal = document.getElementById("mod");
+        var fontScale = document.getElementById("fontScale");
+        var f = document.getElementById("font");
+
+        var r = document.getElementById("rP");
+        var colorRedP = document.getElementById("colorRedP");
+        var g = document.getElementById("gP");
+        var colorGreenP = document.getElementById("colorGreenP");
+        var b = document.getElementById("bP");
+        var colorBlueP = document.getElementById("colorBlueP");
+
+        var rS = document.getElementById("rS");
+        var colorRedS = document.getElementById("colorRedS");
+        var gS = document.getElementById("gS");
+        var colorGreenS = document.getElementById("colorGreenS");
+        var bS = document.getElementById("bS");
+        var colorBlueS = document.getElementById("colorBlueS");
+
+        function reDraw() {
+            numRows = rowSlider.value;
+            value.innerHTML = rowSlider.value;
+            modulus = modSlider.value;
+            modVal.innerHTML = modSlider.value;
+            fontVal = fontScale.value;
+            f.innerHTML = fontScale.value;
+
+            redValP = rP.value;
+            colorRedP.innerHTML = rP.value;
+            greenValP = gP.value;
+            colorGreenP.innerHTML = gP.value;
+            blueValP = bP.value;
+            colorBlueP.innerHTML = bP.value;
+
+            redValS = rS.value;
+            colorRedS.innerHTML = rS.value;
+            greenValS = gS.value;
+            colorGreenS.innerHTML = gS.value;
+            blueValS = bS.value;
+            colorBlueS.innerHTML = bS.value;
+            main.innerHTML = "";
+            pasc(numRows, modulus, fontVal, redValP, greenValP, blueValP, redValS, greenValS, blueValS)
+        };
+    </script>
+
+    <footer>
+        Patterns in the Pascal Triangle - Mikey Thomas - 30/7/23
+    </footer>
+</body>
+
+</html>
