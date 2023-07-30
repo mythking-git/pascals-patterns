@@ -1,6 +1,6 @@
 # pascals-patterns
 
-- Visualisation of modulus operation on pascals triangle.
+- Visualisation of modulus operation on pascals triangle with a [live demo](http://mythking.uk.ms) on my website
 - When using mod2 you are able to estimate Sierpinski's Triangle until approximately row 32.
 - All values display their final digit however calculations are applied to the full value.
 
